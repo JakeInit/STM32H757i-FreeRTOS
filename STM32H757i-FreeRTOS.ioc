@@ -2,7 +2,7 @@
 CORTEX_M7.AccessPermission-Cortex_Memory_Protection_Unit_Region0_Settings=MPU_REGION_FULL_ACCESS
 CORTEX_M7.AccessPermission-Cortex_Memory_Protection_Unit_Region1_Settings=MPU_REGION_FULL_ACCESS
 CORTEX_M7.BaseAddress-Cortex_Memory_Protection_Unit_Region0_Settings=0x30040000
-CORTEX_M7.BaseAddress-Cortex_Memory_Protection_Unit_Region1_Settings=0x30044000
+CORTEX_M7.BaseAddress-Cortex_Memory_Protection_Unit_Region1_Settings=0x30040000
 CORTEX_M7.CPU_DCache=Enabled
 CORTEX_M7.CPU_ICache=Enabled
 CORTEX_M7.DisableExec-Cortex_Memory_Protection_Unit_Region0_Settings=MPU_INSTRUCTION_ACCESS_DISABLE
@@ -55,7 +55,7 @@ ETH.IPParameters=MediaInterface
 ETH.MediaInterface=HAL_ETH_RMII_MODE
 FREERTOS_M7.FootprintOK=true
 FREERTOS_M7.IPParameters=Tasks01,FootprintOK,configUSE_NEWLIB_REENTRANT,configMINIMAL_STACK_SIZE
-FREERTOS_M7.Tasks01=udpTask,24,256,StartUdpTask,Default,NULL,Dynamic,NULL,NULL;heartBeatTask,24,256,StartHeartBeatTask,Default,NULL,Dynamic,NULL,NULL
+FREERTOS_M7.Tasks01=tcpTask,24,256,StartTcpTask,Default,NULL,Dynamic,NULL,NULL;heartBeatTask,24,256,StartHeartBeatTask,Default,NULL,Dynamic,NULL,NULL
 FREERTOS_M7.configMINIMAL_STACK_SIZE=256
 FREERTOS_M7.configUSE_NEWLIB_REENTRANT=1
 File.Version=6

@@ -23,9 +23,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "lwip/udp.h"
+#include "tcpServer.h"
 #include <string.h>
-
 #include <stdio.h>
 
 /* USER CODE END Includes */
@@ -54,10 +53,10 @@ DSI_HandleTypeDef hdsi;
 
 LTDC_HandleTypeDef hltdc;
 
-/* Definitions for udpTask */
-osThreadId_t udpTaskHandle;
-const osThreadAttr_t udpTask_attributes = {
-  .name = "udpTask",
+/* Definitions for tcpTask */
+osThreadId_t tcpTaskHandle;
+const osThreadAttr_t tcpTask_attributes = {
+  .name = "tcpTask",
   .stack_size = 256 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
@@ -78,7 +77,7 @@ static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DSIHOST_DSI_Init(void);
 static void MX_LTDC_Init(void);
-void StartUdpTask(void *argument);
+void StartTcpTask(void *argument);
 void StartHeartBeatTask(void *argument);
 
 /* USER CODE BEGIN PFP */
@@ -182,8 +181,8 @@ Error_Handler();
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* creation of udpTask */
-  udpTaskHandle = osThreadNew(StartUdpTask, NULL, &udpTask_attributes);
+  /* creation of tcpTask */
+  tcpTaskHandle = osThreadNew(StartTcpTask, NULL, &tcpTask_attributes);
 
   /* creation of heartBeatTask */
   heartBeatTaskHandle = osThreadNew(StartHeartBeatTask, NULL, &heartBeatTask_attributes);
@@ -507,43 +506,27 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE END 4 */
 
-/* USER CODE BEGIN Header_StartUdpTask */
+/* USER CODE BEGIN Header_StartTcpTask */
 /**
-  * @brief  Function implementing the udpTask thread.
+  * @brief  Function implementing the tcpTask thread.
   * @param  argument: Not used
   * @retval None
   */
-/* USER CODE END Header_StartUdpTask */
-void StartUdpTask(void *argument)
+/* USER CODE END Header_StartTcpTask */
+void StartTcpTask(void *argument)
 {
   /* init code for LWIP */
   MX_LWIP_Init();
   /* USER CODE BEGIN 5 */
-  const char* message = "Hello UDP message!\n\r";
-
   osDelay(1000);
 
-  ip_addr_t PC_IPADDR;
-  IP_ADDR4(&PC_IPADDR, 192, 168, 1, 23);
-
-  struct udp_pcb* my_udp = udp_new();
-//  udp_connect(my_udp, &PC_IPADDR, 55151);
-  struct pbuf* udp_buffer = NULL;
+  tcp_server_init();
 
   /* Infinite loop */
   for (;;)
   {
   	PIN_TOGGLE(LED_BLUE);
     osDelay(1000);
-    /* !! PBUF_RAM is critical for correct operation !! */
-//    udp_buffer = pbuf_alloc(PBUF_TRANSPORT, strlen(message), PBUF_RAM);
-//
-//    if (udp_buffer != NULL)
-//    {
-//      memcpy(udp_buffer->payload, message, strlen(message));
-//      udp_send(my_udp, udp_buffer);
-//      pbuf_free(udp_buffer);
-//    }
   }
 	osThreadTerminate(NULL);
   /* USER CODE END 5 */
